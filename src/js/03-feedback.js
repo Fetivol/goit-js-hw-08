@@ -24,6 +24,7 @@ function handlerSubmit(evt) {
   if (email.value === '' || message.value === '') {
     return;
   }
+  console.log(JSON.parse(localStorage.getItem('feedback-form-state')));
   localStorage.removeItem('feedback-form-state');
   evt.currentTarget.reset();
 }
