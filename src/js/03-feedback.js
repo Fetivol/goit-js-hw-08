@@ -9,22 +9,18 @@ formEl.addEventListener('submit', handlerSubmit);
 
 function handlerInput(evt) {
   inputValues[evt.target.name] = evt.target.value;
-
-  if (evt.target.name === 'email' && inputValues.message === undefined) {
-    inputValues.message = '';
-  } else if (evt.target.name === 'message' && inputValues.email === undefined) {
-    inputValues.email = '';
-  }
-  console.log(inputValues);
   updateLocalStorage();
 }
 
 function handlerSubmit(evt) {
   evt.preventDefault();
   if (email.value === '' || message.value === '') {
+    alert('Please fill all fields =)');
     return;
   }
   console.log(JSON.parse(localStorage.getItem('feedback-form-state')));
+  delete inputValues.message;
+  delete inputValues.email;
   localStorage.removeItem('feedback-form-state');
   evt.currentTarget.reset();
 }
@@ -34,32 +30,15 @@ function updateLocalStorage() {
 }
 
 function fillInputs() {
-  try {
-    const values = JSON.parse(localStorage.getItem('feedback-form-state'));
-    if (values && values.email !== undefined) {
-      inputValues.email = values.email;
-      email.value = values.email;
-    }
-    if (values && values.message !== undefined) {
-      inputValues.message = values.message;
-      message.value = values.message;
-    }
-
-    email.value = values.email !== undefined ? values.email : '';
-    message.value = values.message !== undefined ? values.message : '';
-
-    if (inputValues.email === undefined && inputValues.message !== undefined) {
-      inputValues.email = '';
-      inputValues.message = values.message;
-    } else if (
-      inputValues.email !== undefined &&
-      inputValues.message === undefined
-    ) {
-      inputValues.message = '';
-      inputValues.email = values.email;
-    }
-  } catch (err) {
-    console.error(err);
+  //   try {
+  const values = JSON.parse(localStorage.getItem('feedback-form-state'));
+  if (values.email) {
+    inputValues.email = values.email;
+    email.value = values.email;
+  }
+  if (values.message) {
+    inputValues.message = values.message;
+    message.value = values.message;
   }
 }
 fillInputs();
